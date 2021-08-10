@@ -8,23 +8,9 @@ resource "yandex_kubernetes_cluster" "kub-test" {
 
   # Указываем, что мастера располагаются в регионе ru-central и какие subnets использовать для каждой зоны
   master {
-    regional {
-      region = "ru-central1"
-
-      location {
-        zone      = yandex_vpc_subnet.internal-a.zone
-        subnet_id = yandex_vpc_subnet.internal-a.id
-      }
-
-      location {
-        zone      = yandex_vpc_subnet.internal-b.zone
-        subnet_id = yandex_vpc_subnet.internal-b.id
-      }
-
-      location {
-        zone      = yandex_vpc_subnet.internal-c.zone
-        subnet_id = yandex_vpc_subnet.internal-c.id
-      }
+    zonal {
+      zone      = "${yandex_vpc_subnet.internal-a.zone}"
+      subnet_id = "${yandex_vpc_subnet.internal-a.id}"
     }
 
     # Указываем версию Kubernetes
@@ -35,6 +21,7 @@ resource "yandex_kubernetes_cluster" "kub-test" {
 
   # Указываем канал обновлений
   release_channel = "RAPID"
+  network_policy_provider = "CALICO"
 
   # Указываем сервисный аккаунт, который будут использовать ноды, и кластер для управления нодами
   node_service_account_id = yandex_iam_service_account.docker.id
