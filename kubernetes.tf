@@ -42,7 +42,7 @@ resource "yandex_kubernetes_cluster" "kub-test" {
 }
 
 # Создаем группу узлов
-resource "yandex_kubernetes_node_group" "node-group-0" {
+resource "yandex_kubernetes_node_group" "test-group-auto" {
   # Указываем, к какому кластеру они принадлежат
   cluster_id  = yandex_kubernetes_cluster.kub-test.id
   # Указываем название группы узлов
@@ -84,14 +84,6 @@ resource "yandex_kubernetes_node_group" "node-group-0" {
   allocation_policy {
     location {
       zone = "ru-central1-a"
-    }
-
-    location {
-      zone = "ru-central1-b"
-    }
-
-    location {
-      zone = "ru-central1-c"
     }
   }
 
